@@ -1,0 +1,93 @@
+/* Modern App Container */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--gradient-hero);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Enhanced Logo Animations */
+.logo {
+  height: clamp(4rem, 8vmin, 8rem);
+  padding: 1.5rem;
+  will-change: filter, transform;
+  transition: var(--transition-smooth);
+  filter: drop-shadow(var(--shadow-elegant));
+}
+
+.logo:hover {
+  filter: drop-shadow(var(--shadow-glow));
+  transform: scale(1.05);
+}
+
+.logo.react:hover {
+  filter: drop-shadow(0 0 3rem rgba(97, 218, 251, 0.6));
+}
+
+/* Smooth Logo Rotation */
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .logo-spinning {
+    animation: logo-spin 20s linear infinite;
+  }
+}
+
+/* Modern Card Component */
+.card {
+  padding: 2rem;
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  backdrop-filter: blur(10px);
+  transition: var(--transition-smooth);
+  box-shadow: var(--shadow-elegant);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow);
+  border-color: hsl(var(--primary) / 0.3);
+}
+
+/* Typography Enhancements */
+.read-the-docs {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.875rem;
+  transition: var(--transition-smooth);
+}
+
+.read-the-docs:hover {
+  color: hsl(var(--foreground));
+}
+
+/* Utility Classes */
+.text-gradient {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glow-effect {
+  box-shadow: var(--shadow-glow);
+  animation: var(--animation-pulse-glow);
+}
+
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
