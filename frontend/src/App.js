@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import VendorInfoTable from './components/VendorInfoTable';
-import { Container, Typography, TextField, MenuItem, Box } from '@mui/material';
-
+import { Container, Typography, TextField, MenuItem, Box, Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 function App() {
   const [vendorData, setVendorData] = useState([]);
@@ -59,6 +59,15 @@ function App() {
       <Typography variant="h4" gutterBottom fontWeight="bold">
         Vendor Additional Info
       </Typography>
+
+      {/* 🔹 Button to go to Vendor Book Server */}
+      <Box sx={{ marginBottom: 3 }}>
+        <Link to="/vendor-book" style={{ textDecoration: 'none' }}>
+          <Button variant="contained" color="primary">
+            Vendor Book Server
+          </Button>
+        </Link>
+      </Box>
 
       <Box sx={{ display: 'flex', gap: 2, marginBottom: 3 }}>
         <TextField

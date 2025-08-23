@@ -1,13 +1,98 @@
+// backend/server.js (ESM, single backend)
+
 import express from 'express';
 import cors from 'cors';
 import { pool } from './db.js';
+import multer from 'multer';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+// __dirname in ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 /* ===========================
-   GET Vendor Info by ID
+   Static uploads + Multer
+=========================== */
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, path.join(__dirname, 'uploads')),
+  filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname),
+});
+const upload = multer({ storage });
+
+/* ===========================
+   Vendor Book submit (kf_vendor)
+   POST /api/kf_vendor
+   - accepts multipart/form-data (logo, image + fields)
+=========================== */
+app.post(
+  '/api/kf_vendor',
+  upload.fields([{ name: 'logo', maxCount: 1 }, { name: 'image', maxCount: 1 }]),
+  async (req, res) => {
+    try {
+      const {
+        VEND_TITL, VEND_CON_ADDR, VEND_CATEGRY, VEND_DET, VEND_STATUS, VEND_SOURCE,
+        email, phone, COUNTRY, STATE, CITY, pincode,
+        VEND_IND_INF, RANKING, DOC_PRICE, INDUSTRY_TYPE, BUSINESS_TYPE, KEYWORDS,
+        PORTAL_RANKING, STATE_RANKING, CITY_RANKING, MYBLOCK_RANKING_TYPE, MYBLOCK_RANKING_NUMBER, PREVIOUS_RANKING,
+        REVENUE, REVENUE_GROWTH, EMPLOYEE_COUNT, EMP_GROWTH, JOB_OPENINGS,
+        COMPANY_NAME, VENDOR_LEVEL, LEAD_INVESTORS, ESTIMATED_REVENUES, ACCELERATOR,
+        FUNDING, TOTAL_FUNDING, SP_COPY_IGNORE, COMMENTS_SUMMARY, VEND_DESC, VEND_KEY_NO,
+        VEND_COMPT, VEND_FINAN_OVIEW, other_emails, other_phones, address, MOBILE_PHONE,
+        PRIMARY_CONTACT_PERSON, VALUATION, VEND_URL, LINKEDIN_URL, PRODUCT_URL,
+        INDEED_URL, VEND_CNTR, FOUNDED_YEAR, FB_PAGE_URL, INSTA_PAGE_URL, LINKEDIN_PAGE_URL,
+        FB_FOLLOWER_COUNT, INSTA_FOLLOWER_COUNT, LINKEDIN_FOLLOWER_COUNT, TYPE_SELECTION
+      } = req.body ?? {};
+
+      const VEND_LOGO = req.files?.logo?.[0]?.path ?? null;
+      const IMAGE     = req.files?.image?.[0]?.path ?? null;
+      const INSRT_DTM = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+      const sql = `
+        INSERT INTO kf_vendor 
+        (PORTAL_ID, MEMBERID, PARENTPORTALID, VEND_SDATE, VEND_EDATE, VEND_LOGO, IMAGE, VEND_TITL, VEND_CON_ADDR, VEND_CATEGRY, VEND_DET, VEND_STATUS, VEND_SOURCE,
+         email, phone, COUNTRY, STATE, CITY, pincode, VEND_IND_INF, RANKING, DOC_PRICE, INDUSTRY_TYPE, BUSINESS_TYPE, KEYWORDS, PORTAL_RANKING, STATE_RANKING, CITY_RANKING,
+         MYBLOCK_RANKING_TYPE, MYBLOCK_RANKING_NUMBER, PREVIOUS_RANKING, REVENUE, REVENUE_GROWTH, EMPLOYEE_COUNT, EMP_GROWTH, JOB_OPENINGS, COMPANY_NAME, VENDOR_LEVEL,
+         LEAD_INVESTORS, ESTIMATED_REVENUES, ACCELERATOR, FUNDING, TOTAL_FUNDING, SP_COPY_IGNORE, COMMENTS_SUMMARY, VEND_DESC, VEND_KEY_NO, VEND_COMPT, VEND_FINAN_OVIEW,
+         other_emails, other_phones, address, MOBILE_PHONE, PRIMARY_CONTACT_PERSON, VALUATION, VEND_URL, LINKEDIN_URL, PRODUCT_URL, INDEED_URL, VEND_CNTR, FOUNDED_YEAR,
+         FB_PAGE_URL, INSTA_PAGE_URL, LINKEDIN_PAGE_URL, FB_FOLLOWER_COUNT, INSTA_FOLLOWER_COUNT, LINKEDIN_FOLLOWER_COUNT, TYPE_SELECTION, INSRT_DTM)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+      `;
+
+      const values = [
+        // First five fixed values (as per your vendor_book_server)
+        1, 1, 1, '2025-01-01', '2025-12-31',
+        // Files + fields
+        VEND_LOGO, IMAGE, VEND_TITL, VEND_CON_ADDR, VEND_CATEGRY, VEND_DET, VEND_STATUS, VEND_SOURCE,
+        email, phone, COUNTRY, STATE, CITY, pincode,
+        VEND_IND_INF, RANKING, DOC_PRICE, INDUSTRY_TYPE, BUSINESS_TYPE, KEYWORDS,
+        PORTAL_RANKING, STATE_RANKING, CITY_RANKING, MYBLOCK_RANKING_TYPE, MYBLOCK_RANKING_NUMBER, PREVIOUS_RANKING,
+        REVENUE, REVENUE_GROWTH, EMPLOYEE_COUNT, EMP_GROWTH, JOB_OPENINGS,
+        COMPANY_NAME, VENDOR_LEVEL, LEAD_INVESTORS, ESTIMATED_REVENUES, ACCELERATOR,
+        FUNDING, TOTAL_FUNDING, SP_COPY_IGNORE, COMMENTS_SUMMARY, VEND_DESC, VEND_KEY_NO,
+        VEND_COMPT, VEND_FINAN_OVIEW, other_emails, other_phones, address, MOBILE_PHONE,
+        PRIMARY_CONTACT_PERSON, VALUATION, VEND_URL, LINKEDIN_URL, PRODUCT_URL,
+        INDEED_URL, VEND_CNTR, FOUNDED_YEAR, FB_PAGE_URL, INSTA_PAGE_URL, LINKEDIN_PAGE_URL,
+        FB_FOLLOWER_COUNT, INSTA_FOLLOWER_COUNT, LINKEDIN_FOLLOWER_COUNT, TYPE_SELECTION, INSRT_DTM
+      ];
+
+      await pool.query(sql, values);
+      return res.status(200).send('✅ Vendor Data inserted successfully');
+    } catch (err) {
+      console.error('❌ Error inserting Vendor Data:', err);
+      return res.status(500).send('❌ Error inserting Vendor Data');
+    }
+  }
+);
+
+/* ===========================
+   GET Vendor Info by ID  (your existing)
 =========================== */
 app.get('/api/vendor/:id', async (req, res) => {
   const vendorId = req.params.id;
@@ -27,7 +112,7 @@ app.get('/api/vendor/:id', async (req, res) => {
 });
 
 /* ===========================
-   SEARCH Vendor IDs
+   SEARCH Vendor IDs (your existing)
 =========================== */
 app.get('/api/vendors/search', async (req, res) => {
   const searchTerm = req.query.q || '';
@@ -48,7 +133,7 @@ app.get('/api/vendors/search', async (req, res) => {
 });
 
 /* ===========================
-   ADD Vendor Info
+   ADD Vendor Info (your existing)
 =========================== */
 app.post('/api/vendor', async (req, res) => {
   const { VEND_ID, INFO_TYPE, INFO_TITLE, INFO_VALUE } = req.body;
@@ -70,7 +155,7 @@ app.post('/api/vendor', async (req, res) => {
 });
 
 /* ===========================
-   UPDATE Vendor Info
+   UPDATE Vendor Info (your existing)
 =========================== */
 app.put('/api/vendor/:id', async (req, res) => {
   const infoId = req.params.id;
@@ -94,7 +179,7 @@ app.put('/api/vendor/:id', async (req, res) => {
 });
 
 /* ===========================
-   DELETE Vendor Info
+   DELETE Vendor Info (your existing)
 =========================== */
 app.delete('/api/vendor/:id', async (req, res) => {
   const infoId = req.params.id;
@@ -107,6 +192,9 @@ app.delete('/api/vendor/:id', async (req, res) => {
   }
 });
 
+/* ===========================
+   Start server
+=========================== */
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`✅ Backend running on http://localhost:${PORT}`);
