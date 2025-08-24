@@ -1,4 +1,22 @@
-/* Modern App Container */
+/* =============================================================================
+   VENDORBOOK CSS - FULL SCREEN FIXED & CENTERED
+   Fixed positioning and full screen coverage
+============================================================================= */
+
+/* CSS Variables for consistency */
+:root {
+  --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow-elegant: 0 10px 25px rgba(0, 0, 0, 0.15);
+  --shadow-glow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  --gradient-hero: linear-gradient(135deg, #165f7365 0%, #1f8c8465 100%);
+  --gradient-primary: linear-gradient(135deg, #21327b 0%, #531b8a 100%);
+  --radius: 12px;
+  --animation-pulse-glow: pulse-glow 2s ease-in-out infinite;
+}
+
+/* =============================================================================
+   MODERN APP CONTAINER
+============================================================================= */
 #root {
   min-height: 100vh;
   display: flex;
@@ -28,12 +46,8 @@
 
 /* Smooth Logo Rotation */
 @keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -90,4 +104,525 @@
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: var(--shadow-glow); }
+  50% { box-shadow: var(--shadow-glow), 0 0 40px rgba(20, 44, 150, 0.4); }
+}
+
+/* =============================================================================
+   VENDOR BOOK – FULL SCREEN WRAPPER
+   All styles scoped under .vendorbook-page
+============================================================================= */
+.vendorbook-page,
+.vendorbook-page * {
+  box-sizing: border-box;
+}
+
+.vendorbook-page {
+  --bg: #0d797e65;
+  --card: #0e446659;
+  --card-2: #0a505566;
+  --muted: #9aa4b2;
+  --text: #e6e8ec;
+  --accent: #0e226c55;
+  --accent-2: #4f46e5;
+  --accent-3: #22d3ee;
+  --good: #10b981;
+  --warn: #f59e0b;
+  --danger: #ef4444;
+
+  /* FIXED: Full screen positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  
+  /* FIXED: Complete background coverage */
+  background: radial-gradient(1200px 800px at 10% -10%, #1f324c8f 0%, #122a4750 50%) no-repeat,
+              linear-gradient(180deg, #113561 0%, #14357d 100%);
+  
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Inter, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji';
+  
+  /* Prevent scrolling behind the modal */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Prevent body scroll when vendorbook is open */
+body:has(.vendorbook-page) {
+  overflow: hidden;
+}
+
+/* =============================================================================
+   TOP BAR + BACK BUTTON
+============================================================================= */
+.vendorbook-page .vb-top {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  justify-content: flex-start;
+  padding: 16px 20px;
+  background: linear-gradient(180deg, rgba(8, 54, 109, 0.95) 0%, rgba(7, 39, 75, 0.7) 100%);
+  backdrop-filter: blur(10px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.298);
+}
+
+.vendorbook-page .vb-back {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #334155, #1f2937);
+  color: #e5e7eb;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: transform 0.16s ease, opacity 0.16s ease, box-shadow 0.16s ease;
+}
+
+.vendorbook-page .vb-back:hover {
+  transform: translateY(-2px);
+  opacity: 0.98;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.264), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* =============================================================================
+   CONTENT CONTAINER - FIXED & CENTERED
+============================================================================= */
+.vendorbook-page .vb-content {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px; /* Increased for better coverage */
+  margin: 0 auto; /* FIXED: Proper centering */
+  padding: 20px;
+  
+  /* FIXED: Ensure content is always centered */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: calc(100vh - 80px); /* Account for top bar */
+}
+
+/* FIXED: Main Card - Proper centering and full width usage */
+.vendorbook-page .vendor-book-container {
+  width: 100%;
+  max-width: 1100px; /* Proper max width */
+  background: linear-gradient(180deg, var(--card) 0%, var(--card-2) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  
+  /* FIXED: Ensure container takes available space properly */
+  margin: 0 auto;
+  position: relative;
+}
+
+/* =============================================================================
+   STEPPER COMPONENT
+============================================================================= */
+.vendorbook-page .stepper-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 10px 0 20px;
+  margin-bottom: 25px;
+}
+
+.vendorbook-page .step {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 15px;
+  color: #e2e8f0;
+  background: radial-gradient(100% 100% at 30% 20%, #2c2f43 0%, #1f2340 70%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 8px 18px rgba(0, 0, 0, 0.35);
+  transition: all 0.3s ease;
+}
+
+.vendorbook-page .step.active {
+  color: white;
+  background: radial-gradient(100% 100% at 30% 20%, #7c3aed 0%, #4f46e5 60%);
+  border-color: rgba(124, 58, 237, 0.7);
+  box-shadow: 0 12px 25px rgba(124, 58, 237, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transform: scale(1.05);
+}
+
+.vendorbook-page .step.completed {
+  background: radial-gradient(100% 100% at 30% 20%, #10b981 0%, #059669 65%);
+  color: #022c22;
+  border-color: rgba(16, 185, 129, 0.6);
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.vendorbook-page .line {
+  width: 50px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.2);
+  transition: all 0.3s ease;
+}
+
+.vendorbook-page .line.active {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+  box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+}
+
+/* =============================================================================
+   FORM LAYOUT
+============================================================================= */
+.vendorbook-page .form-container {
+  width: 100%;
+}
+
+.vendorbook-page .details {
+  margin-bottom: 25px;
+}
+
+.vendorbook-page .details .title {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0.3px;
+  color: #dbeafe;
+  text-align: left;
+}
+
+/* FIXED: Grid fields - Better responsive layout */
+.vendorbook-page .fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 18px;
+}
+
+@media (max-width: 1200px) {
+  .vendorbook-page .fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .vendorbook-page .fields {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Input Styling */
+.vendorbook-page .input-field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  margin: 0 0 8px 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.vendorbook-page .input-field input,
+.vendorbook-page .input-field textarea,
+.vendorbook-page input[type="text"],
+.vendorbook-page input[type="number"] {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(203, 213, 225, 0.18);
+  outline: none;
+  background: rgba(15, 23, 42, 0.7);
+  color: var(--text);
+  font-size: 14px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.vendorbook-page .input-field input:focus,
+.vendorbook-page .input-field textarea:focus,
+.vendorbook-page input[type="text"]:focus,
+.vendorbook-page input[type="number"]:focus {
+  border-color: rgba(124, 58, 237, 0.6);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+  background: rgba(15, 23, 42, 0.85);
+}
+
+/* =============================================================================
+   UPLOAD SECTIONS - FIXED CENTERING
+============================================================================= */
+.vendorbook-page .images {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 20px;
+  /* FIXED: Ensure proper centering */
+  justify-items: center;
+}
+
+@media (max-width: 900px) {
+  .vendorbook-page .images {
+    grid-template-columns: 1fr;
+  }
+}
+
+.vendorbook-page .image-field {
+  width: 100%;
+  max-width: 400px; /* FIXED: Prevent boxes from being too wide */
+}
+
+.vendorbook-page .image-field .upload-container {
+  width: 100%;
+  min-height: 250px;
+  border: 2px dashed rgba(148, 163, 184, 0.4);
+  border-radius: 16px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  background: rgba(2, 6, 23, 0.4);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+}
+
+.vendorbook-page .upload-container:hover {
+  border-color: rgba(124, 58, 237, 0.6);
+  background: rgba(2, 6, 23, 0.6);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.vendorbook-page .upload-container .icon,
+.vendorbook-page .upload-container .preview {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--card-2);
+}
+
+.vendorbook-page .files {
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.vendorbook-page .files span {
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+.vendorbook-page .error {
+  color: var(--danger);
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* =============================================================================
+   BUTTONS
+============================================================================= */
+.vendorbook-page .button-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.vendorbook-page .nextBtn,
+.vendorbook-page .nextBtn1,
+.vendorbook-page .backBtn,
+.vendorbook-page .submitBtn {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  color: #e5e7eb;
+  letter-spacing: 0.3px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 8px 18px rgba(67, 56, 202, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: transform 0.12s ease, filter 0.12s ease, box-shadow 0.12s ease;
+  min-width: 100px;
+}
+
+.vendorbook-page .backBtn {
+  background: linear-gradient(135deg, #334155, #1f2937);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.vendorbook-page .submitBtn {
+  background: linear-gradient(135deg, #16a34a, #0ea5e9);
+  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.vendorbook-page .nextBtn:hover,
+.vendorbook-page .nextBtn1:hover,
+.vendorbook-page .backBtn:hover,
+.vendorbook-page .submitBtn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+.vendorbook-page .nextBtn:active,
+.vendorbook-page .nextBtn1:active,
+.vendorbook-page .backBtn:active,
+.vendorbook-page .submitBtn:active {
+  transform: translateY(0);
+}
+
+/* =============================================================================
+   TABLES
+============================================================================= */
+.vendorbook-page table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.vendorbook-page th,
+.vendorbook-page td {
+  padding: 12px 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  text-align: left;
+}
+
+.vendorbook-page thead th {
+  background: linear-gradient(90deg, rgba(124, 58, 237, 0.25), rgba(79, 70, 229, 0.25));
+  border-bottom: 1px solid rgba(124, 58, 237, 0.40);
+  font-weight: 600;
+}
+
+/* =============================================================================
+   RESPONSIVE DESIGN - FIXED
+============================================================================= */
+@media (max-width: 1200px) {
+  .vendorbook-page .vb-content {
+    padding: 15px;
+    max-width: 95vw;
+  }
+  
+  .vendorbook-page .vendor-book-container {
+    padding: 25px;
+    margin: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .vendorbook-page .vb-content {
+    padding: 10px;
+    min-height: calc(100vh - 70px);
+  }
+  
+  .vendorbook-page .vendor-book-container {
+    padding: 20px;
+    border-radius: 16px;
+  }
+  
+  .vendorbook-page .stepper-container {
+    gap: 12px;
+  }
+  
+  .vendorbook-page .step {
+    width: 34px;
+    height: 34px;
+    font-size: 14px;
+  }
+  
+  .vendorbook-page .line {
+    width: 40px;
+  }
+  
+  .vendorbook-page .images {
+    gap: 20px;
+  }
+  
+  .vendorbook-page .image-field .upload-container {
+    min-height: 220px;
+    padding: 20px;
+  }
+  
+  .vendorbook-page .upload-container .icon,
+  .vendorbook-page .upload-container .preview {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .vendorbook-page .button-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .vendorbook-page .button-container > * {
+    min-width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .vendorbook-page .vb-top {
+    padding: 12px 15px;
+  }
+  
+  .vendorbook-page .vendor-book-container {
+    padding: 15px;
+    margin: 5px;
+  }
+  
+  .vendorbook-page .details .title {
+    font-size: 18px;
+  }
+}
+
+/* =============================================================================
+   PERFORMANCE OPTIMIZATIONS
+============================================================================= */
+.vendorbook-page .step,
+.vendorbook-page .upload-container,
+.vendorbook-page .nextBtn,
+.vendorbook-page .nextBtn1,
+.vendorbook-page .backBtn,
+.vendorbook-page .submitBtn {
+  will-change: transform;
+}
+
+/* Accessibility improvements */
+.vendorbook-page .vb-back:focus-visible,
+.vendorbook-page .nextBtn:focus-visible,
+.vendorbook-page .nextBtn1:focus-visible,
+.vendorbook-page .backBtn:focus-visible,
+.vendorbook-page .submitBtn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* FIXED: Prevent zoom issues */
+.vendorbook-page {
+  transform-origin: center center;
+  position: fixed;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
 }

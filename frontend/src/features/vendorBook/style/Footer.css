@@ -1,4 +1,4 @@
-/* src/style/Footer.css */
+/* 
 .footer {
   position: relative;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -10,7 +10,7 @@
   overflow: hidden;
 }
 
-/* Add subtle animation background */
+
 .footer::before {
   content: '';
   position: absolute;
@@ -136,7 +136,7 @@
   transform: translateY(-1px) scale(1.02);
 }
 
-/* Divider line */
+
 .footer-divider {
   height: 1px;
   background: linear-gradient(
@@ -180,7 +180,7 @@
   color: #ffffff;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .footer {
     padding: 3rem 1.5rem 1.5rem;
@@ -232,14 +232,13 @@
   }
 }
 
-/* Dark mode support */
 @media (prefers-color-scheme: dark) {
   .footer {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   }
 }
 
-/* Accessibility improvements */
+
 @media (prefers-reduced-motion: reduce) {
   .footer::before {
     animation: none;
@@ -252,4 +251,4 @@
   .footer-socials a:hover {
     transform: none;
   }
-}
+} */

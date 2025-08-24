@@ -2,7 +2,7 @@
 import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import '../style/VendorBook.css';
+// import '../style/VendorBook.css';
 
 const totalSteps = 6; // You can adjust as needed
 

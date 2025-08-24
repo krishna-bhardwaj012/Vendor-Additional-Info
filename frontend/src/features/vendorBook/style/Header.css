@@ -1,4 +1,4 @@
-/* Header.css */
+/* 
 .header {
   display: flex;
   align-items: center;
@@ -17,7 +17,6 @@
   font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
 }
 
-/* Animated background overlay */
 .header::before {
   content: '';
   position: absolute;
@@ -38,7 +37,7 @@
   left: 100%;
 }
 
-/* Logo Section */
+
 .logo {
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 800;
@@ -64,7 +63,7 @@
   transform: scale(1.02);
 }
 
-/* Navigation (if you want to add it) */
+
 .nav {
   display: flex;
   align-items: center;
@@ -113,7 +112,7 @@
   font-weight: 600;
 }
 
-/* Profile Section */
+
 .profile {
   display: flex;
   align-items: center;
@@ -195,7 +194,6 @@
   line-height: 1.2;
 }
 
-/* Dropdown arrow */
 .profile-dropdown-icon {
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.7);
@@ -206,7 +204,7 @@
   transform: rotate(180deg);
 }
 
-/* Mobile Menu Toggle */
+
 .mobile-menu-toggle {
   display: none;
   flex-direction: column;
@@ -243,7 +241,7 @@
   transform: rotate(-45deg) translate(6px, -6px);
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .header {
     padding: 1rem 1.5rem;
@@ -306,7 +304,7 @@
   }
 }
 
-/* Dark mode support */
+
 @media (prefers-color-scheme: dark) {
   .header {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
@@ -314,7 +312,7 @@
   }
 }
 
-/* Accessibility improvements */
+
 @media (prefers-reduced-motion: reduce) {
   .header::before,
   .profile::before,
@@ -329,4 +327,4 @@
   * {
     transition: none !important;
   }
-}
+} */

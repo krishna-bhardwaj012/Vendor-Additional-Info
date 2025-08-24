@@ -1,30 +1,28 @@
 import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
-
-// styles
-import "./style/VendorBook.css";
-import "./style/Header.css";
-import "./style/Footer.css";
-
-// components
-import VendorBook from "./components/VendorBook";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import VendorBook from "./components/VendorBook"; // <-- IMPORT THIS
 
 export default function VendorBookApp() {
   return (
-    <div>
-      <Header />
+    <div className="vendorbook-page">
+      <div className="vb-container">
+        <div className="vb-top">
+          <Link to="/" className="vb-back">← Back to App</Link>
+        </div>
 
-      <nav style={{ padding: 8 }}>
-        <Link to="/">← Back to App</Link>
-      </nav>
-
-      <Routes>
-        <Route index element={<VendorBook />} />
-      </Routes>
-
-      <Footer />
+        <div className="vb-content">
+          <Routes>
+            <Route
+              index
+              element={
+                <div className="vb-content-inner">
+                  <VendorBook />   {/* <-- RENDER IT HERE */}
+                </div>
+              }
+            />
+          </Routes>
+        </div>
+      </div>
     </div>
   );
 }
